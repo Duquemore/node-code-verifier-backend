@@ -1,19 +1,17 @@
-import express, { Express, Request, Response } from 'express';
+import server from './src/server';
+import { LogError, LogSuccess } from './src/utils/logger';
+// Environment Variables
 import dotenv from 'dotenv';
 
 // Configuration of .env file
 dotenv.config();
 
-// Create Express App
-const app = express();
 const port: number | string = process.env.PORT || 8000;
 
-// Define the first Route of App
+// Execute Server and listen requests to Port
+server.listen(port, () => LogSuccess(`[SERVER ON]: Running in: http://localhost:${port}/api`));
 
-app.get('/', (req: Request, res: Response) => {
-	//Send Hello World
-	res.send('Welcome to APP Express + TS + Swagger + Mongoose');
+// Control SERVER ERROR
+server.on('error', (error) => {
+	LogError(`[SERVER ERROR]: ${error}`);
 });
-
-// Execute App and listen requests to Port
-app.listen(port, () => console.log(`Express server running at: http://localhost:${port}`));
